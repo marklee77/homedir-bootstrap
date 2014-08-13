@@ -53,11 +53,12 @@ cat > "${HOOK_SCRIPT}" << HOOK
 git config core.sparseCheckout true
 cat >> \$GIT_DIR/info/sparse-checkout << EOF
 *
-!README*
-!LICENSE*
 !.gitignore
-!Vagrantfile
 !.travis.yml
+!LICENSE*
+!README*
+!Vagrantfile
+!docs
 !travis
 EOF
 HOOK
