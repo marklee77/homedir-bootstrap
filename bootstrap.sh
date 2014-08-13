@@ -15,8 +15,11 @@ fi
 
 PIP=$(which pip || true)
 if [ -z "${PIP}" ]; then
-  echo "pip required."
-  exit 1
+  echo "installing pip to ${BIN_DIR}"
+  mkdir -p ${BIN_DIR}
+  export PATH="${BIN_DIR}:${PATH}"
+  PIP="${BIN_DIR}/pip"
+  curl -s https://bootstrap.pypa.io/get-pip.py | python - --user
 fi
 
 VCSH=$(which vcsh || true)
