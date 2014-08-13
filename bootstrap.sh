@@ -1,10 +1,11 @@
 #!/bin/sh
-set -e
 
-: ${BOOTSTRAP_REPOS:="test"}
+: ${BOOTSTRAP_REPOS:="git myrepos nodenv powerline pyenv rbenv scripts svn tmux vim zsh"}
 
 : ${XDG_CONFIG_HOME:="${HOME}/.config"}
 : ${BIN_DIR:="${HOME}/.local/bin"}
+
+set -e
 
 GIT=$(which git || true)
 if [ -z "${GIT}" ]; then
@@ -12,10 +13,17 @@ if [ -z "${GIT}" ]; then
   exit 1
 fi
 
+PIP=$(which pip || true)
+if [ -z "${PIP}" ]; then
+  echo "pip required."
+  exit 1
+fi
+
 VCSH=$(which vcsh || true)
 if [ -z "${VCSH}" ]; then
   echo "installing vcsh to ${BIN_DIR}"
   mkdir -p ${BIN_DIR}
+  export PATH="${BIN_DIR}:${PATH}"
   VCSH="${BIN_DIR}/vcsh"
   curl -s https://raw.githubusercontent.com/RichiH/vcsh/master/vcsh -o "${VCSH}"
   chmod 700 ${VCSH}
@@ -25,6 +33,7 @@ MR=$(which mr || true)
 if [ -z "${MR}" ]; then
   echo "installing mr to ${BIN_DIR}"
   mkdir -p ${BIN_DIR}
+  export PATH="${BIN_DIR}:${PATH}"
   MR="${BIN_DIR}/mr"
   curl -s https://raw.githubusercontent.com/joeyh/myrepos/master/mr -o "${MR}"
   chmod 700 ${MR}
@@ -51,10 +60,13 @@ EOF
 HOOK
 chmod 755 "${HOOK_SCRIPT}"
 
+cd
 
 echo "cloning bootstrap vcsh repositories..."
 for repo in ${BOOTSTRAP_REPOS}; do
   if [ ! -d "${XDG_CONFIG_HOME}/vcsh/repo.d/${repo}.git" ]; then
-    ${VCSH} clone https://github.com/marklee77/vcsh-homedir-${repo}.git ${repo}
+    ${VCSH} clone https://stillwell.me/mark/vcsh-homedir-${repo}.git ${repo}
   fi
 done
+
+${MR} update
