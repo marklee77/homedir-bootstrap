@@ -1,6 +1,8 @@
 #!/bin/sh
 
-: ${BOOTSTRAP_REPOS:="git myrepos nodenv powerline pyenv rbenv scripts svn tmux vim zsh"}
+: ${REPO_URL_BASE:="https://stillwell.me/mark/vcsh-homedir-"}
+: ${BOOTSTRAP_REPOS:="git myrepos nodenv powerline pyenv rbenv scripts svn tmux 
+                      vim zsh"}
 
 : ${XDG_CONFIG_HOME:="${HOME}/.config"}
 : ${BIN_DIR:="${HOME}/.local/bin"}
@@ -69,8 +71,9 @@ cd
 echo "cloning bootstrap vcsh repositories..."
 for repo in ${BOOTSTRAP_REPOS}; do
   if [ ! -d "${XDG_CONFIG_HOME}/vcsh/repo.d/${repo}.git" ]; then
-    ${VCSH} clone https://stillwell.me/mark/vcsh-homedir-${repo}.git ${repo}
+    ${VCSH} clone ${REPO_URL_BASE}${repo}.git ${repo}
   fi
 done
 
+echo "running mr update..."
 ${MR} update
