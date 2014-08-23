@@ -1,8 +1,7 @@
 #!/bin/sh
 
 : ${REPO_URL_BASE:="https://stillwell.me/mark/vcsh-homedir-"}
-: ${BOOTSTRAP_REPOS:="git myrepos nodenv powerline pyenv rbenv scripts svn tmux 
-                      vim zsh"}
+: ${BOOTSTRAP_REPOS:="myrepos scripts vim zsh"}
 
 : ${XDG_CONFIG_HOME:="${HOME}/.config"}
 : ${BIN_DIR:="${HOME}/.local/bin"}
