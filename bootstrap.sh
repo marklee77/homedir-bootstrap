@@ -2,6 +2,7 @@
 
 : ${XDG_CONFIG_HOME:="${HOME}/.config"}
 : ${BIN_DIR:="${HOME}/.local/bin"}
+export PATH="${BIN_DIR}:${PATH}"
 
 set -e
 
