@@ -64,5 +64,5 @@ EOF
 HOOK
 chmod 755 "${HOOK_SCRIPT}"
 cd ${VCSH_HOOK_E}
-ln -s ${HOOK_SCRIPT} ../hooks-available/${HOOK_SCRIPT}
+ln -s ../hooks-available/${HOOK_SCRIPT} ${HOOK_SCRIPT}
 
