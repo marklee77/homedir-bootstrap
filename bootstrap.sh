@@ -1,8 +1,5 @@
 #!/bin/sh
 
-: ${REPO_URL_BASE:="https://stillwell.me/mark/vcsh-homedir-"}
-: ${BOOTSTRAP_REPOS:="myrepos scripts vim zsh"}
-
 : ${XDG_CONFIG_HOME:="${HOME}/.config"}
 : ${BIN_DIR:="${HOME}/.local/bin"}
 
@@ -43,12 +40,14 @@ if [ -z "${MR}" ]; then
   chmod 700 ${MR}
 fi
 
-echo "installing vcsh sparse checkout hook..."
-: ${VCSH_HOOK_D:="${XDG_CONFIG_HOME}/vcsh/hooks-enabled"}
-mkdir -p "${VCSH_HOOK_D}"
-cd "${VCSH_HOOK_D}"
+echo "preparing vcsh hook directories..."
+: ${VCSH_HOOK_A:="${XDG_CONFIG_HOME}/vcsh/hooks-available"}
+: ${VCSH_HOOK_E:="${XDG_CONFIG_HOME}/vcsh/hooks-enabled"}
+mkdir -p ${VCSH_HOOK_A} ${VCSH_HOOK_E}
 
+echo "installing vcsh sparse checkout hook..."
 HOOK_SCRIPT="post-init.sparse-checkout"
+cd ${VCSH_HOOK_A}
 cat > "${HOOK_SCRIPT}" << HOOK
 #!/bin/sh
 git config core.sparseCheckout true
@@ -64,15 +63,6 @@ cat >> \$GIT_DIR/info/sparse-checkout << EOF
 EOF
 HOOK
 chmod 755 "${HOOK_SCRIPT}"
+cd ${VCSH_HOOK_E}
+ln -s ${HOOK_SCRIPT} ../hooks-available/${HOOK_SCRIPT}
 
-cd
-
-echo "cloning bootstrap vcsh repositories..."
-for repo in ${BOOTSTRAP_REPOS}; do
-  if [ ! -d "${XDG_CONFIG_HOME}/vcsh/repo.d/${repo}.git" ]; then
-    ${VCSH} clone ${REPO_URL_BASE}${repo}.git ${repo}
-  fi
-done
-
-echo "running mr update..."
-${MR} update
