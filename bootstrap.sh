@@ -49,10 +49,10 @@ mkdir -p ${VCSH_HOOK_A} ${VCSH_HOOK_E}
 echo "installing vcsh sparse checkout hook..."
 HOOK_SCRIPT="post-init.sparse-checkout"
 cd ${VCSH_HOOK_A}
-cat > "${HOOK_SCRIPT}" << HOOK
+cat > "${HOOK_SCRIPT}" <<'HOOK'
 #!/bin/sh
 git config core.sparseCheckout true
-cat >> \$GIT_DIR/info/sparse-checkout << EOF
+cat >> $GIT_DIR/info/sparse-checkout << EOF
 *
 !.gitignore
 !.travis.yml
@@ -62,6 +62,20 @@ cat >> \$GIT_DIR/info/sparse-checkout << EOF
 !docs
 !travis
 EOF
+HOOK
+chmod 755 "${HOOK_SCRIPT}"
+cd ${VCSH_HOOK_E}
+ln -sf ../hooks-available/${HOOK_SCRIPT} ${HOOK_SCRIPT}
+
+echo "installing vcsh fix permissions hook..."
+HOOK_SCRIPT="post-command.fixperms"
+cd ${VCSH_HOOK_A}
+cat > "${HOOK_SCRIPT}" <<'HOOK'
+#!/bin/bash
+: ${XDG_CONFIG_HOME:="${HOME}/.config"}
+: ${VCSH_PERM_D:=$XDG_CONFIG_HOME/vcsh/perms.d}
+[ -d ${VCSH_PERM_D} ] || exit 0
+cat ${VCSH_PERM_D}/* | perl -ane "print \"chmod \$F[0] $HOME/\$F[1]\n\"" | sh
 HOOK
 chmod 755 "${HOOK_SCRIPT}"
 cd ${VCSH_HOOK_E}
