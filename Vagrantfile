@@ -12,4 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.playbook = "site.yml"
   end
 
+  config.vm.provision "shell" do |shell|
+    shell.privileged = false
+    shell.path = "bootstrap.sh"
+  end
+
 end

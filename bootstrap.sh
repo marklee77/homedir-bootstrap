@@ -81,3 +81,5 @@ chmod 755 "${HOOK_SCRIPT}"
 cd ${VCSH_HOOK_E}
 ln -sf ../hooks-available/${HOOK_SCRIPT} ${HOOK_SCRIPT}
 
+#echo "checking out myrepos homedir repository..."
+#vcsh clone https://gitlab.stillwell.me/mark/vcsh-homedir-myrepos.git myrepos
