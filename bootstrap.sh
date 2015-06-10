@@ -60,7 +60,6 @@ cat >> $GIT_DIR/info/sparse-checkout << EOF
 !README*
 !Vagrantfile
 !docs
-!travis
 EOF
 HOOK
 chmod 755 "${HOOK_SCRIPT}"
