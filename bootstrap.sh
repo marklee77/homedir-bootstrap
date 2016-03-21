@@ -82,6 +82,3 @@ ln -sf ../hooks-available/${HOOK_SCRIPT} ${HOOK_SCRIPT}
 
 echo "checking out myrepos homedir repository..."
 vcsh clone https://gitlab.stillwell.me/mark/vcsh-homedir-myrepos.git myrepos
-mr checkout
-mr checkout
-mr checkout
